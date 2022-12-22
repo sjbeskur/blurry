@@ -8,8 +8,8 @@ use cv::{
     types::VectorOfu8,
 };
 
-type BoxedError = Box<dyn std::error::Error>;
-type AppResult<T> = Result<T, BoxedError>;
+pub type BoxedError = Box<dyn std::error::Error>;
+pub type AppResult<T> = Result<T, BoxedError>;
 
 pub mod cli;
 use cli::*;
@@ -21,8 +21,6 @@ pub fn blur_gaussian(config: Config, ksize: i32, sigma_x: f64, sigma_y: f64) -> 
     }
     let m = ksize;
     let n = ksize;
-    let sigma_x = 0.0;
-    let sigma_y = 0.0;
 
     let src = imgcodecs::imread(&config.filename, imgcodecs::IMREAD_COLOR)?;
 
@@ -31,7 +29,8 @@ pub fn blur_gaussian(config: Config, ksize: i32, sigma_x: f64, sigma_y: f64) -> 
 
     imgproc::gaussian_blur(&src, &mut dst, size,  sigma_x, sigma_y, core::BORDER_REFLECT_101)?;
 
-    show(config.filename, &dst)?;
+    let name = format!("{} (k:{}, s:{})", config.filename, ksize, sigma_x);
+    show(name, &dst)?;
     Ok(())
 }
 

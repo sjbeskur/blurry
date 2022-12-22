@@ -1,6 +1,6 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser};
 
-fn main() {
+fn main() -> blurry::AppResult<()>{
 
     let cfg = blurry::cli::Config::parse();
     dbg!(&cfg);
@@ -9,12 +9,12 @@ fn main() {
         
         blurry::cli::Commands::Norm{ ksize } => {
             println!("{}", ksize);
-            blurry::blur_avg(cfg, ksize);
+            blurry::blur_avg(cfg, ksize)
         },
 
         blurry::cli::Commands::Gaus{ksize, sigma} => {
             println!("Gaussian");
-            blurry::blur_gaussian(cfg, ksize, sigma, sigma);
+            blurry::blur_gaussian(cfg, ksize, sigma, sigma)
         }
         
     }
