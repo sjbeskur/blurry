@@ -25,5 +25,12 @@ pub enum Commands{
    
         #[arg(short='s', long, default_value_t=0.0)]
         sigma: f64,
-    }
+    },
+
+    #[command(author, version, about, long_about = "Blurs using the median filter")]
+    Median {
+        #[arg(short, long, help="aperture linear size; it must be odd and greater than 1, for example: 3, 5, 7 ")]
+        ksize: i32,
+    },
+
 }

@@ -14,6 +14,24 @@ pub type AppResult<T> = Result<T, BoxedError>;
 pub mod cli;
 use cli::*;
 
+
+pub fn blur_median(config: Config,  ksize: i32) -> AppResult<()>{    
+    if ksize%2 == 0{
+        panic!("invalid ksize {}", ksize);
+    }
+
+    let src = imgcodecs::imread(&config.filename, imgcodecs::IMREAD_COLOR)?;
+    let mut dst = Mat::default();
+
+    imgproc::median_blur(&src, &mut dst, ksize)?;
+
+    let name = format!("{} -Median (k:{})", config.filename, ksize);
+    show(name, &dst)?;
+    Ok(())
+}
+
+
+
 pub fn blur_gaussian(config: Config,  ksize: i32, sigma_x: f64, sigma_y: f64) -> AppResult<()>{    
     if ksize%2 == 0{
         panic!("invalid ksize {}", ksize);
