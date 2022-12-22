@@ -11,7 +11,10 @@ use cv::{
 type BoxedError = Box<dyn std::error::Error>;
 type AppResult<T> = Result<T, BoxedError>;
 
-pub fn run(filename: String, ksize: i32) -> AppResult<()>{    
+pub mod cli;
+use cli::*;
+
+pub fn run(config: Config, ksize: i32) -> AppResult<()>{    
     if ksize%2 == 0{
         panic!("invalid ksize {}", ksize);
     }
@@ -19,8 +22,7 @@ pub fn run(filename: String, ksize: i32) -> AppResult<()>{
     let m = ksize;
     let n = ksize;
 
-    println!("{}", filename);
-    let src = imgcodecs::imread(&filename, imgcodecs::IMREAD_COLOR)?;
+    let src = imgcodecs::imread(&config.filename, imgcodecs::IMREAD_COLOR)?;
 
     let mut dst = Mat::default();
     let size = core::Size::new(m,n);
