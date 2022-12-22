@@ -25,3 +25,11 @@ fn main() -> blurry::AppResult<()>{
     }
 */
 }
+
+
+
+#[test]
+fn verify_cli() {
+    use clap::CommandFactory;
+    blurry::cli::Config::command().debug_assert()
+}
