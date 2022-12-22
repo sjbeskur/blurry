@@ -14,7 +14,7 @@ fn run_subcommand(cfg: blurry::cli::Config) -> blurry::AppResult<()>{
         
         blurry::cli::Commands::Norm{ ksize } => {
             println!("{}", ksize);
-            blurry::blur_avg(cfg, ksize)
+            blurry::blur_norm(cfg, ksize)
         },
 
         blurry::cli::Commands::Gaus{ksize, sigma} => {
