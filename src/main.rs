@@ -1,10 +1,15 @@
 use clap::{Parser};
 
-fn main() -> blurry::AppResult<()>{
-
+fn main() {
     let cfg = blurry::cli::Config::parse();
-    dbg!(&cfg);
+    if let Err(e) = run_subcommand(cfg){
+        eprintln!("{}", e);
+        std::process::exit(1)
+    };
 
+}
+
+fn run_subcommand(cfg: blurry::cli::Config) -> blurry::AppResult<()>{
     match cfg.command {
         
         blurry::cli::Commands::Norm{ ksize } => {
@@ -13,19 +18,12 @@ fn main() -> blurry::AppResult<()>{
         },
 
         blurry::cli::Commands::Gaus{ksize, sigma} => {
-            println!("Gaussian");
             blurry::blur_gaussian(cfg, ksize, sigma, sigma)
         }
         
     }
 
-/* 
-    if let Err(e) = blurry::run(cfg){
-        eprintln!("{}", e);
-    }
-*/
 }
-
 
 
 #[test]
