@@ -14,11 +14,31 @@ type AppResult<T> = Result<T, BoxedError>;
 pub mod cli;
 use cli::*;
 
-pub fn run(config: Config, ksize: i32) -> AppResult<()>{    
+pub fn blur_gaussian(config: Config, ksize: i32, sigma_x: f64, sigma_y: f64) -> AppResult<()>{    
+
     if ksize%2 == 0{
         panic!("invalid ksize {}", ksize);
     }
-    println!("{}", "here");
+    let m = ksize;
+    let n = ksize;
+    let sigma_x = 0.0;
+    let sigma_y = 0.0;
+
+    let src = imgcodecs::imread(&config.filename, imgcodecs::IMREAD_COLOR)?;
+
+    let mut dst = Mat::default();
+    let size = core::Size::new(m,n);
+
+    imgproc::gaussian_blur(&src, &mut dst, size,  sigma_x, sigma_y, core::BORDER_REFLECT_101)?;
+
+    show(config.filename, &dst)?;
+    Ok(())
+}
+
+pub fn blur_avg(config: Config, ksize: i32) -> AppResult<()>{    
+    if ksize%2 == 0{
+        panic!("invalid ksize {}", ksize);
+    }
     let m = ksize;
     let n = ksize;
 
@@ -29,7 +49,7 @@ pub fn run(config: Config, ksize: i32) -> AppResult<()>{
     let anchor = core::Point::new(-1,-1);
     imgproc::blur(&src, &mut dst, size,  anchor, core::BORDER_REFLECT_101)?;
 
-    show("sam".to_string(), &dst)?;
+    show(config.filename, &dst)?;
     
     Ok(())
 }

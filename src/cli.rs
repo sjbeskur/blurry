@@ -17,5 +17,11 @@ pub enum Commands{
         ksize: i32,
     },
 
-    Gaus,
+    Gaus{
+        #[arg(short='k', long)]
+        ksize: i32,
+   
+        #[arg(short='s', long)]
+        sigma: f64,
+    }
 }
