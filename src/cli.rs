@@ -1,4 +1,4 @@
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Debug, Parser)]
 #[command(author="", version="", about="", long_about = None)]
@@ -7,7 +7,7 @@ pub struct Config{
 
     
     #[command(subcommand)]
-    pub command: Commands,
+    pub command: Commands,    
 }
 
 #[derive(Debug, Subcommand)]
@@ -25,6 +25,9 @@ pub enum Commands{
    
         #[arg(short='s', long, default_value_t=0.0)]
         sigma: f64,
+
+        #[arg(short='b', value_enum, default_value_t=BorderStrategy::Reflect)]
+        boarder: BorderStrategy,
     },
 
     #[command(author, version, about, long_about = "Blurs using the median filter")]
@@ -32,5 +35,12 @@ pub enum Commands{
         #[arg(short, long, help="aperture linear size; it must be odd and greater than 1, for example: 3, 5, 7 ")]
         ksize: i32,
     },
+}
 
+#[derive(ValueEnum, Clone, Copy, Debug)]
+#[repr(i32)]
+pub enum BorderStrategy{
+    Reflect = opencv::core::BORDER_REFLECT101,
+    Replicate = opencv::core::BORDER_REPLICATE,
+    Wrap = opencv::core::BORDER_WRAP,
 }

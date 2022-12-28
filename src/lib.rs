@@ -32,7 +32,7 @@ pub fn blur_median(config: Config,  ksize: i32) -> AppResult<()>{
 
 
 
-pub fn blur_gaussian(config: Config,  ksize: i32, sigma_x: f64, sigma_y: f64) -> AppResult<()>{    
+pub fn blur_gaussian(config: Config,  ksize: i32, sigma_x: f64, sigma_y: f64,  border: BorderStrategy) -> AppResult<()>{    
     if ksize%2 == 0{
         panic!("invalid ksize {}", ksize);
     }
@@ -45,7 +45,7 @@ pub fn blur_gaussian(config: Config,  ksize: i32, sigma_x: f64, sigma_y: f64) ->
     let mut dst = Mat::default();
     let size = core::Size::new(m,n);
 
-    imgproc::gaussian_blur(&src, &mut dst, size,  sigma_x, sigma_y, core::BORDER_REFLECT_101)?;
+    imgproc::gaussian_blur(&src, &mut dst, size,  sigma_x, sigma_y, border as i32)?;
 
     let name = format!("{} (k:{}, s:{})", config.filename, ksize, sigma_x);
     show(name, &dst)?;

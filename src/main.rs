@@ -17,8 +17,8 @@ fn run_subcommand(cfg: blurry::cli::Config) -> blurry::AppResult<()>{
             blurry::blur_norm(cfg, ksize)
         },
 
-        blurry::cli::Commands::Gaus{ksize, sigma} => {
-            blurry::blur_gaussian(cfg, ksize, sigma, sigma)
+        blurry::cli::Commands::Gaus{ksize, sigma, boarder} => {
+            blurry::blur_gaussian(cfg, ksize, sigma, sigma, boarder)
         },
         
         blurry::cli::Commands::Median{ksize} => {
